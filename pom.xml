@@ -104,31 +104,22 @@
         </executions>
       </plugin>
       <plugin>
-        <!-- explicitly define maven-deploy-plugin after javadocs and sources to force exec order -->
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.7</version>
-        <executions>
-          <execution>
-            <id>deploy</id>
-            <phase>deploy</phase>
-            <goals>
-              <goal>deploy</goal>
-            </goals>
-          </execution>
-        </executions>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.2</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>false</autoReleaseAfterClose>
+        </configuration>
       </plugin>
     </plugins>
   </build>
   <distributionManagement>
-    <repository>
-      <id>MSI</id>
-      <name>MSI-releases</name>
-      <url>http://lochness.msiops.net/artifactory/libs-releases-local</url>
-    </repository>
     <snapshotRepository>
-      <id>MSI</id>
-      <name>MSI-snapshots</name>
-      <url>http://lochness.msiops.net/artifactory/libs-snapshots-local</url>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
 </project>
