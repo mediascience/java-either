@@ -119,4 +119,16 @@
       </plugin>
     </plugins>
   </build>
+  <distributionManagement>
+    <repository>
+      <id>MSI</id>
+      <name>MSI-releases</name>
+      <url>http://lochness.msiops.net/artifactory/libs-releases-local</url>
+    </repository>
+    <snapshotRepository>
+      <id>MSI</id>
+      <name>MSI-snapshots</name>
+      <url>http://lochness.msiops.net/artifactory/libs-snapshots-local</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>
