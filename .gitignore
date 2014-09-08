@@ -1,0 +1,24 @@
+# gradle build
+build/
+.gradle/
+
+#gradlew
+gradle/
+gradlew
+gradlew.bat
+
+# maven build
+target/
+
+# eclipse
+.classpath
+.project
+.settings/
+
+# idea intellij
+bin/
+
+# macintosh
+.DS_Store
+
+

@@ -1,0 +1,25 @@
+# default to using Git's own text heuristic. Will perform
+# LF -> CRLF during checkout on Windows if file is determined
+# to be text. Override for specific cases later in this file.
+*               text=auto
+
+# things that are explicitly text and subject to convert-on-checkout
+*.java          text
+*.js            text
+*.xml           text
+*.json          text
+*.properties    text
+
+*.md            text
+
+.gitignore      text
+.gitattributes  text
+
+*.sh            text eol=lf
+*.bat           text eol=crlf
+
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+
+
