@@ -116,7 +116,7 @@ after the 1.x series is published will result in a new series, such as
 This work is based on some ideas from standard libraries for Haskell.
 Haskell is great and you should learn it. Really.
 
-Media Science International's support for FOSS software and the
+Media Science International's support for FOSS and the
 sophistication to develop and publish it grows and grows. MSI Yay.
 
 ## License
