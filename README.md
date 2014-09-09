@@ -2,8 +2,9 @@
 
 ## Java Either
 
-An either value can be one of two types but never both
-simultaneously.
+An Either type models two simultaneous types. An instance of
+of a particular Either type is a value of exactly one of the
+modeled types.
 
 ## Usage
 
@@ -87,25 +88,36 @@ assert !np.isPresent();
 
 #### Convert it to a stream
 ```
-Stream<Object> s = Either.left(10).stream();
+Stream<Integer> s = Either.left(10).stream();
 assert s.collect(Collectors.toList()).equals(Collections.singletonList(10));
 
-Stream e = Either.right("oops").stream();
+Stream<Integer> e = Either.right("oops").stream();
 assert s.collect(Collectors.toList()).equals(Collections.emptyList());
 ```
 
 ## Versioning
 
-Releases in the 0.x series are the Wild West. Anything can change between releases--package names, method signatures, behavior, whatever. But if you like it as it is right now, all the tests pass so just use it and have fun.
+Releases in the 0.x series are the Wild West. Anything can change between
+releases--package names, method signatures, behavior, whatever. But if you
+like it as it is right now, all the tests pass so just use it at its current
+version and have fun.
 
-The next version series will be 1.x. Every release in that series will be backward compatible with every lower-numbered release in the same series with one exception. A release could become incompatible due to a bug fix or something underspecified in the specification.
+The next version series will be 1.x. Every release in that series will be
+backward compatible with every lower-numbered release in the same series
+except possibly in the case of 1) a bug fix or 2) a correction to an
+underspecification.
+
+A complete change to the interface, behavior, license, or anything else
+after the 1.x series is published will result in a new series, such as
+2.x.
 
 ## Acknowledgements
 
-This work is based on some ideas from standard Haskell libraries. Haskell is great and you should learn it. Really.
+This work is based on some ideas from standard libraries for Haskell.
+Haskell is great and you should learn it. Really.
 
-Media Science International's support for FOSS softwware and the sophistication to develop it grows
-and grows. MSI Yay.
+Media Science International's support for FOSS software and the
+sophistication to develop and publish it grows and grows. MSI Yay.
 
 ## License
 
