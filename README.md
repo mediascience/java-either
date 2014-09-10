@@ -73,6 +73,8 @@ Either<?,?> e = Either.right("huh").map(x -> x * x);
 assert !e.isLeft();
 assert e.getRight().equals("huh");
 ```
+(flatMap, too!)
+
 
 #### Convert it to optional
 ````
@@ -93,6 +95,37 @@ assert s.collect(Collectors.toList()).equals(Collections.singletonList(10));
 
 Stream<Integer> e = Either.right("oops").stream();
 assert s.collect(Collectors.toList()).equals(Collections.emptyList());
+```
+
+#### Unwind it
+```
+Either<Object,Object> left = Either.left("left");
+Either<Object,Object> right = Either.right("right");
+
+assert left.getLeft().equals("left");
+// left.getRight();   <-- Throws! Don't do this
+
+assert right.getRight().equals("right");
+// right.getLeft();   <-- Throws! Don't do this
+
+
+assert left.leftOrElse("other").equals("left");
+assert left.rightOrElse("other").equals("other");
+
+assert right.rightOrElse("other").equals("right");
+assert right.leftOrElse("other").equals("other");
+
+assert left.leftOrElseGet(() -> "other").equals("left");
+assert left.rightOrElseGet(() -> "other").equals("other");
+
+assert right.rightOrElseGet(() -> "other").equals("right");
+assert right.leftOrElseGet(() -> "other").equals("other");
+
+assert left.leftOrElseNull().equals("left");
+assert left.rightOrElseNull() == null;
+
+assert right.rightOrElseNull().equals("right");
+assert right.leftOrElseNull() == null;
 ```
 
 ## Versioning

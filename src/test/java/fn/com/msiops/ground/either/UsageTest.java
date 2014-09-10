@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -138,6 +139,107 @@ public class UsageTest {
     }
 
     @Test
+    public void testLeftOrElseFromLeft() {
+
+        final Either<Object, ?> left = Either.left("left");
+
+        assertEquals("left", left.leftOrElse("other"));
+    }
+
+    @Test
+    public void testLeftOrElseFromRight() {
+
+        final Either<Object, ?> right = Either.right("right");
+
+        assertEquals("other", right.leftOrElse("other"));
+
+    }
+
+    @Test
+    public void testLeftOrElseGetFromLeft() {
+
+        @SuppressWarnings("unchecked")
+        final Supplier<Object> other = mock(Supplier.class);
+
+        final Either<Object, ?> left = Either.left("left");
+
+        assertEquals("left", left.leftOrElseGet(other));
+        /*
+         * function must no be called
+         */
+        verify(other, never()).get();
+
+    }
+
+    @Test
+    public void testLeftOrElseGetFromRight() {
+
+        final Either<Object, ?> right = Either.right("right");
+
+        assertEquals("other", right.leftOrElseGet(() -> "other"));
+
+    }
+
+    @Test
+    public void testLeftOrElseGetNullSupplierFromLeft() {
+
+        final Either<Object, ?> left = Either.left("left");
+
+        assertEquals("left", left.leftOrElseGet(null));
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testLeftOrElseGetNullSupplierFromRight() {
+
+        Either.right("right").leftOrElseGet(null);
+
+    }
+
+    @Test
+    public void testLeftOrElseGetSuppliesNullFromLeft() {
+
+        final Either<Object, ?> left = Either.left("left");
+
+        assertEquals("left", left.leftOrElseGet(() -> null));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testLeftOrElseGetSuppliesNullFromRight() {
+
+        Either.right("right").leftOrElseGet(() -> null);
+
+    }
+
+    @Test
+    public void testLeftOrElseNullFromLeft() {
+
+        assertEquals("left", Either.left("left").leftOrElseNull());
+
+    }
+
+    @Test
+    public void testLeftOrElseNullFromRight() {
+        assertNull(Either.right("right").leftOrElseNull());
+
+    }
+
+    @Test
+    public void testLeftOrElseNullValueFromLeft() {
+
+        final Either<Object, ?> left = Either.left("left");
+
+        assertEquals("left", left.leftOrElse(null));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testLeftOrElseNullValueFromRight() {
+
+        Either.right("right").leftOrElse(null);
+
+    }
+
+    @Test
     public void testMapLeft() {
 
         final Function<Integer, ?> f = x -> x * x;
@@ -198,6 +300,105 @@ public class UsageTest {
     }
 
     @Test
+    public void testRightOrElseFromLeft() {
+
+        final Either<?, Object> left = Either.left("left");
+
+        assertEquals("other", left.rightOrElse("other"));
+
+    }
+
+    @Test
+    public void testRightOrElseFromRight() {
+
+        final Either<?, Object> right = Either.right("right");
+
+        assertEquals("right", right.rightOrElse("other"));
+
+    }
+
+    @Test
+    public void testRightOrElseGetFromLeft() {
+
+        final Either<?, Object> left = Either.left("left");
+
+        assertEquals("other", left.rightOrElseGet(() -> "other"));
+    }
+
+    @Test
+    public void testRightOrElseGetFromRight() {
+        @SuppressWarnings("unchecked")
+        final Supplier<Object> other = mock(Supplier.class);
+
+        final Either<?, Object> right = Either.right("right");
+
+        assertEquals("right", right.rightOrElseGet(other));
+        /*
+         * function must no be called
+         */
+        verify(other, never()).get();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testRightOrElseGetNullSupplierFromLeft() {
+
+        Either.left("left").rightOrElseGet(null);
+
+    }
+
+    @Test
+    public void testRightOrElseGetNullSupplierFromRight() {
+
+        final Either<?, Object> right = Either.right("right");
+
+        assertEquals("right", right.rightOrElseGet(null));
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testRightOrElseGetSuppliesNullFromLeft() {
+
+        Either.left("left").rightOrElseGet(() -> null);
+
+    }
+
+    @Test
+    public void testRightOrElseGetSuppliesNullFromRight() {
+
+        final Either<?, Object> right = Either.right("right");
+
+        assertEquals("right", right.rightOrElseGet(() -> null));
+    }
+
+    @Test
+    public void testRightOrElseNullFromLeft() {
+
+        assertNull(Either.left("left").rightOrElseNull());
+
+    }
+
+    @Test
+    public void testRightOrElseNullFromRight() {
+
+        assertEquals("right", Either.right("right").rightOrElseNull());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testRightOrElseNullValueFromLeft() {
+
+        Either.left("left").rightOrElse(null);
+    }
+
+    @Test
+    public void testRightOrElseNullValueFromRight() {
+
+        final Either<?, Object> right = Either.right("right");
+
+        assertEquals("right", right.rightOrElse(null));
+
+    }
+
+    @Test
     public void testStreamFromLeft() {
 
         final Stream<String> s = Either.left("left").stream();
@@ -244,4 +445,5 @@ public class UsageTest {
         assertEquals(Either.right(rightx), lf.apply(10));
 
     }
+
 }
