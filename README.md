@@ -10,13 +10,17 @@ modeled types.
 
 ### Include Dependencies
 
+Either is deployed to Maven Central:
 ```
 <dependency>
   <groupId>com.msiops.ground</groupId>
   <artifactId>ground-either</artifactId>
-  <version>0.4</version>
+  <version>${v.either}</version>
 </dependency>
 ```
+
+Go to the [project page at Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.msiops.ground%22%20a%3A%22ground-either%22) 
+to find the latest version.
 
 ### Create an Either
 
