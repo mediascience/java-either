@@ -385,7 +385,7 @@ public final class Either<Left, Right> {
      * Iterate over the value. If this is a left instance, the value is supplied
      * to the consumer. Otherwise, this method has no observable effect.
      *
-     * @param value
+     * @param c
      *            consumer. Will not be called if this is a right instance.
      */
     public void forEach(final Consumer<? super Left> c) {
@@ -564,6 +564,9 @@ public final class Either<Left, Right> {
      *            if this is a right instance. The supplier must not return null
      *            if this is a right instance.
      *
+     * @param <X>
+     *            type of exception to throw if this is a right instance.
+     *
      * @return the value if this is a left instance.
      *
      * @throws X
@@ -653,6 +656,9 @@ public final class Either<Left, Right> {
      *
      * @throws X
      *             if this is a left instance.
+     *
+     * @param <X>
+     *            type of exception to throw if this is a left instance.
      *
      * @throws NullPointerException
      *             if this is a left instance and supplier is null or this is a
