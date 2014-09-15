@@ -139,19 +139,11 @@ public class UsageTest {
     }
 
     @Test
-    public void testLeftOrElseFromLeft() {
-
-        final Either<Object, ?> left = Either.left("left");
-
-        assertEquals("left", left.leftOrElse("other"));
-    }
-
-    @Test
     public void testLeftOrElseFromRight() {
 
         final Either<Object, ?> right = Either.right("right");
 
-        assertEquals("other", right.leftOrElse("other"));
+        assertEquals("other", right.orElse("other"));
 
     }
 
@@ -163,7 +155,7 @@ public class UsageTest {
 
         final Either<Object, ?> left = Either.left("left");
 
-        assertEquals("left", left.leftOrElseGet(other));
+        assertEquals("left", left.orElseGet(other));
         /*
          * function must no be called
          */
@@ -176,7 +168,7 @@ public class UsageTest {
 
         final Either<Object, ?> right = Either.right("right");
 
-        assertEquals("other", right.leftOrElseGet(() -> "other"));
+        assertEquals("other", right.orElseGet(() -> "other"));
 
     }
 
@@ -185,14 +177,14 @@ public class UsageTest {
 
         final Either<Object, ?> left = Either.left("left");
 
-        assertEquals("left", left.leftOrElseGet(null));
+        assertEquals("left", left.orElseGet(null));
 
     }
 
     @Test(expected = NullPointerException.class)
     public void testLeftOrElseGetNullSupplierFromRight() {
 
-        Either.right("right").leftOrElseGet(null);
+        Either.right("right").orElseGet(null);
 
     }
 
@@ -201,26 +193,26 @@ public class UsageTest {
 
         final Either<Object, ?> left = Either.left("left");
 
-        assertEquals("left", left.leftOrElseGet(() -> null));
+        assertEquals("left", left.orElseGet(() -> null));
     }
 
     @Test(expected = NullPointerException.class)
     public void testLeftOrElseGetSuppliesNullFromRight() {
 
-        Either.right("right").leftOrElseGet(() -> null);
+        Either.right("right").orElseGet(() -> null);
 
     }
 
     @Test
     public void testLeftOrElseNullFromLeft() {
 
-        assertEquals("left", Either.left("left").leftOrElseNull());
+        assertEquals("left", Either.left("left").orElseNull());
 
     }
 
     @Test
     public void testLeftOrElseNullFromRight() {
-        assertNull(Either.right("right").leftOrElseNull());
+        assertNull(Either.right("right").orElseNull());
 
     }
 
@@ -229,13 +221,13 @@ public class UsageTest {
 
         final Either<Object, ?> left = Either.left("left");
 
-        assertEquals("left", left.leftOrElse(null));
+        assertEquals("left", left.orElse(null));
     }
 
     @Test(expected = NullPointerException.class)
     public void testLeftOrElseNullValueFromRight() {
 
-        Either.right("right").leftOrElse(null);
+        Either.right("right").orElse(null);
 
     }
 
@@ -264,39 +256,47 @@ public class UsageTest {
     }
 
     @Test
-    public void testOptionalFromLeft() {
+    public void testMaybeFromLeft() {
 
         final Either<?, ?> e = Either.left("left");
 
-        assertEquals(Optional.of("left"), e.optional());
+        assertEquals(Optional.of("left"), e.maybe());
 
     }
 
     @Test
-    public void testOptionalFromRight() {
+    public void testMaybeFromRight() {
 
         final Either<?, ?> e = Either.right("right");
 
-        assertEquals(Optional.empty(), e.optional());
+        assertEquals(Optional.empty(), e.maybe());
 
     }
 
     @Test
-    public void testOptionalRightFromLeft() {
+    public void testMaybeRightFromLeft() {
 
         final Either<?, ?> e = Either.left("left");
 
-        assertEquals(Optional.empty(), e.optionalRight());
+        assertEquals(Optional.empty(), e.maybeRight());
 
     }
 
     @Test
-    public void testOptionalRightFromRight() {
+    public void testMaybeRightFromRight() {
 
         final Either<?, ?> e = Either.right("right");
 
-        assertEquals(Optional.of("right"), e.optionalRight());
+        assertEquals(Optional.of("right"), e.maybeRight());
 
+    }
+
+    @Test
+    public void testOrElseFromLeft() {
+
+        final Either<Object, ?> left = Either.left("left");
+
+        assertEquals("left", left.orElse("other"));
     }
 
     @Test

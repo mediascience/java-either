@@ -426,63 +426,6 @@ public final class Either<Left, Right> {
     }
 
     /**
-     * Retrieve the value or an alternative. If this is a left instance, the
-     * contained value is returned, otherwise a provided alternative is
-     * returned.
-     *
-     * @param other
-     *            alternative value.
-     *
-     * @return the contained value if this is a left instance, the alternative
-     *         otherwise.
-     *
-     * @throws NullPointerException
-     *             if this is a right value and the provided alternative is
-     *             null.
-     */
-    public Left leftOrElse(final Left other) {
-
-        return this.left == null ? Objects.requireNonNull(other) : extract();
-
-    }
-
-    /**
-     * Retrieve the value or compute an alternative. If this is a left instance,
-     * the contained value is returned, otherwise an alternative is computed
-     * from the provided supplier.
-     *
-     * @param other
-     *            alternative value supplier. Required if this is a right
-     *            instance. The supplier is not invoked if this is a left
-     *            instance. If invoked, the supplier must not return null.
-     *
-     * @return the contained value if this is a left instance, the computed
-     *         alternative otherwise.
-     *
-     * @throws NullPointerException
-     *             if this is a right instance and the supplier parameter is
-     *             null or if the supplier is invoked and it returns null.
-     */
-    public Left leftOrElseGet(final Supplier<? extends Left> other) {
-
-        return this.left == null ? Objects.requireNonNull(other.get())
-                : extract();
-
-    }
-
-    /**
-     * Retrieve the left value or an alternative. If this is a left value, the
-     * contained value is returned. Otherwise, a null reference to the Left type
-     * is returned.
-     *
-     * @return contained value if this is a left instance, null otherwise.
-     */
-    public Left leftOrElseNull() {
-
-        return this.left == null ? null : extract();
-    }
-
-    /**
      * <p>
      * Map left according to a mapping function.
      * </p>
@@ -521,8 +464,9 @@ public final class Either<Left, Right> {
      *
      * @return An optional that is present if this is a left variant, empty if
      *         not.
+     *
      */
-    public Optional<Left> optional() {
+    public Optional<Left> maybe() {
         return this.left == null ? Optional.empty() : Optional.of(extract());
     }
 
@@ -532,8 +476,66 @@ public final class Either<Left, Right> {
      * @return An optional that is present if this is a right variant, empty if
      *         not.
      */
-    public Optional<Right> optionalRight() {
+    public Optional<Right> maybeRight() {
         return Optional.ofNullable(this.right);
+    }
+
+    /**
+     * Retrieve the value or an alternative. If this is a left instance, the
+     * contained value is returned, otherwise a provided alternative is
+     * returned.
+     *
+     * @param other
+     *            alternative value.
+     *
+     * @return the contained value if this is a left instance, the alternative
+     *         otherwise.
+     *
+     * @throws NullPointerException
+     *             if this is a right value and the provided alternative is
+     *             null.
+     */
+    public Left orElse(final Left other) {
+
+        return this.left == null ? Objects.requireNonNull(other) : extract();
+
+    }
+
+    /**
+     * Retrieve the value or compute an alternative. If this is a left instance,
+     * the contained value is returned, otherwise an alternative is computed
+     * from the provided supplier.
+     *
+     * @param other
+     *            alternative value supplier. Required if this is a right
+     *            instance. The supplier is not invoked if this is a left
+     *            instance. If invoked, the supplier must not return null.
+     *
+     * @return the contained value if this is a left instance, the computed
+     *         alternative otherwise.
+     *
+     * @throws NullPointerException
+     *             if this is a right instance and the supplier parameter is
+     *             null or if the supplier is invoked and it returns null.
+     */
+    public Left orElseGet(final Supplier<? extends Left> other) {
+
+        return this.left == null ? Objects.requireNonNull(other.get())
+                : extract();
+
+    }
+
+    /**
+     * Retrieve the left value or an alternative. If this is a left value, the
+     * contained value is returned. Otherwise, a null reference to the Left type
+     * is returned.
+     *
+     * @return contained value if this is a left instance, null otherwise.
+     *
+     */
+    public Left orElseNull() {
+
+        return this.left == null ? null : extract();
     }
 
     /**

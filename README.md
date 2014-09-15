@@ -82,15 +82,15 @@ assert e.getRight().equals("huh");
 
 #### Convert it to optional
 ````
-Optional<?> p = Either.left(10).optional();
+Optional<?> p = Either.left(10).maybe();
 assert p.isPresent();
 assert p.get().equals(10);
 
-Optional<?> np = Either.right("whoa").optional();
+Optional<?> np = Either.right("whoa").maybe();
 assert !np.isPresent();
 ````
 
-(there's optionalRight(), too!)
+(there's maybeRight(), too!)
 
 #### Convert it to a stream
 ```
@@ -113,23 +113,23 @@ assert right.getRight().equals("right");
 // right.getLeft();   <-- Throws! Don't do this
 
 
-assert left.leftOrElse("other").equals("left");
+assert left.orElse("other").equals("left");
 assert left.rightOrElse("other").equals("other");
 
 assert right.rightOrElse("other").equals("right");
-assert right.leftOrElse("other").equals("other");
+assert right.orElse("other").equals("other");
 
-assert left.leftOrElseGet(() -> "other").equals("left");
+assert left.orElseGet(() -> "other").equals("left");
 assert left.rightOrElseGet(() -> "other").equals("other");
 
 assert right.rightOrElseGet(() -> "other").equals("right");
-assert right.leftOrElseGet(() -> "other").equals("other");
+assert right.orElseGet(() -> "other").equals("other");
 
-assert left.leftOrElseNull().equals("left");
+assert left.orElseNull().equals("left");
 assert left.rightOrElseNull() == null;
 
 assert right.rightOrElseNull().equals("right");
-assert right.leftOrElseNull() == null;
+assert right.orElseNull() == null;
 ```
 
 ## Versioning
