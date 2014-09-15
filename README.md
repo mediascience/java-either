@@ -101,6 +101,8 @@ Stream<Integer> e = Either.right("oops").stream();
 assert s.collect(Collectors.toList()).equals(Collections.emptyList());
 ```
 
+(there's streamRight, too!)
+
 #### Unwind it
 ```
 Either<Object,Object> left = Either.left("left");

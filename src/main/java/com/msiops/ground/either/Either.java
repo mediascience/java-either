@@ -596,12 +596,24 @@ public final class Either<Left, Right> {
     /**
      * Convert to a {@link Stream} of the Left type.
      *
-     * @return A stream containing a single element if this is a left insance.
-     *         An empty stream if this is a right instance.
+     * @return A stream containing only the value if this is a left insance. An
+     *         empty stream if this is a right instance.
      */
     public Stream<Left> stream() {
 
         return this.left == null ? Stream.empty() : Stream.of(extract());
+
+    }
+
+    /**
+     * Convert to a {@link Stream} of the right type.
+     *
+     * @return a stream containing only the value if this is a right instance.
+     *         An empty stream if this is a left instance.
+     */
+    public Stream<Right> streamRight() {
+
+        return this.left == null ? Stream.of(this.right) : Stream.empty();
 
     }
 

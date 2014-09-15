@@ -21,8 +21,6 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -401,22 +399,35 @@ public class UsageTest {
     @Test
     public void testStreamFromLeft() {
 
-        final Stream<String> s = Either.left("left").stream();
+        final Stream<?> s = Either.left("left").stream();
 
-        final List<String> collected = s.collect(Collectors.toList());
-
-        assertEquals(Arrays.asList("left"), collected);
+        assertEquals(Arrays.asList("left"), s.collect(Collectors.toList()));
     }
 
     @Test
     public void testStreamFromRight() {
 
-        final Stream<String> s = Either.<String, Object> right("right")
-                .stream();
+        final Stream<?> s = Either.<String, Object> right("right").stream();
 
-        final List<String> collected = s.collect(Collectors.toList());
+        assertTrue(s.collect(Collectors.toList()).isEmpty());
+    }
 
-        assertEquals(Collections.emptyList(), collected);
+    @Test
+    public void testStreamRightFromLeft() {
+
+        final Stream<?> s = Either.left("left").streamRight();
+
+        assertTrue(s.collect(Collectors.toList()).isEmpty());
+
+    }
+
+    @Test
+    public void testStreamRightFromRight() {
+
+        final Stream<?> s = Either.right("right").streamRight();
+
+        assertEquals(Arrays.asList("right"), s.collect(Collectors.toList()));
+
     }
 
     @Test
