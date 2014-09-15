@@ -21,8 +21,6 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -139,19 +137,11 @@ public class UsageTest {
     }
 
     @Test
-    public void testLeftOrElseFromLeft() {
-
-        final Either<Object, ?> left = Either.left("left");
-
-        assertEquals("left", left.leftOrElse("other"));
-    }
-
-    @Test
     public void testLeftOrElseFromRight() {
 
         final Either<Object, ?> right = Either.right("right");
 
-        assertEquals("other", right.leftOrElse("other"));
+        assertEquals("other", right.orElse("other"));
 
     }
 
@@ -163,7 +153,7 @@ public class UsageTest {
 
         final Either<Object, ?> left = Either.left("left");
 
-        assertEquals("left", left.leftOrElseGet(other));
+        assertEquals("left", left.orElseGet(other));
         /*
          * function must no be called
          */
@@ -176,7 +166,7 @@ public class UsageTest {
 
         final Either<Object, ?> right = Either.right("right");
 
-        assertEquals("other", right.leftOrElseGet(() -> "other"));
+        assertEquals("other", right.orElseGet(() -> "other"));
 
     }
 
@@ -185,14 +175,14 @@ public class UsageTest {
 
         final Either<Object, ?> left = Either.left("left");
 
-        assertEquals("left", left.leftOrElseGet(null));
+        assertEquals("left", left.orElseGet(null));
 
     }
 
     @Test(expected = NullPointerException.class)
     public void testLeftOrElseGetNullSupplierFromRight() {
 
-        Either.right("right").leftOrElseGet(null);
+        Either.right("right").orElseGet(null);
 
     }
 
@@ -201,26 +191,26 @@ public class UsageTest {
 
         final Either<Object, ?> left = Either.left("left");
 
-        assertEquals("left", left.leftOrElseGet(() -> null));
+        assertEquals("left", left.orElseGet(() -> null));
     }
 
     @Test(expected = NullPointerException.class)
     public void testLeftOrElseGetSuppliesNullFromRight() {
 
-        Either.right("right").leftOrElseGet(() -> null);
+        Either.right("right").orElseGet(() -> null);
 
     }
 
     @Test
     public void testLeftOrElseNullFromLeft() {
 
-        assertEquals("left", Either.left("left").leftOrElseNull());
+        assertEquals("left", Either.left("left").orElseNull());
 
     }
 
     @Test
     public void testLeftOrElseNullFromRight() {
-        assertNull(Either.right("right").leftOrElseNull());
+        assertNull(Either.right("right").orElseNull());
 
     }
 
@@ -229,13 +219,13 @@ public class UsageTest {
 
         final Either<Object, ?> left = Either.left("left");
 
-        assertEquals("left", left.leftOrElse(null));
+        assertEquals("left", left.orElse(null));
     }
 
     @Test(expected = NullPointerException.class)
     public void testLeftOrElseNullValueFromRight() {
 
-        Either.right("right").leftOrElse(null);
+        Either.right("right").orElse(null);
 
     }
 
@@ -264,38 +254,96 @@ public class UsageTest {
     }
 
     @Test
-    public void testOptionalFromLeft() {
+    public void testMaybeFromLeft() {
 
         final Either<?, ?> e = Either.left("left");
 
-        assertEquals(Optional.of("left"), e.optional());
+        assertEquals(Optional.of("left"), e.maybe());
 
     }
 
     @Test
-    public void testOptionalFromRight() {
+    public void testMaybeFromRight() {
 
         final Either<?, ?> e = Either.right("right");
 
-        assertEquals(Optional.empty(), e.optional());
+        assertEquals(Optional.empty(), e.maybe());
 
     }
 
     @Test
-    public void testOptionalRightFromLeft() {
+    public void testMaybeRightFromLeft() {
 
         final Either<?, ?> e = Either.left("left");
 
-        assertEquals(Optional.empty(), e.optionalRight());
+        assertEquals(Optional.empty(), e.maybeRight());
 
     }
 
     @Test
-    public void testOptionalRightFromRight() {
+    public void testMaybeRightFromRight() {
 
         final Either<?, ?> e = Either.right("right");
 
-        assertEquals(Optional.of("right"), e.optionalRight());
+        assertEquals(Optional.of("right"), e.maybeRight());
+
+    }
+
+    @Test
+    public void testOrElseFromLeft() {
+
+        final Either<Object, ?> left = Either.left("left");
+
+        assertEquals("left", left.orElse("other"));
+    }
+
+    @Test
+    public void testOrElseThrowFromLeft() {
+
+        @SuppressWarnings("unchecked")
+        final Supplier<RuntimeException> gen = mock(Supplier.class);
+
+        assertEquals("v",
+                Either.left("v").orElseThrow(() -> new RuntimeException()));
+        /*
+         * supplier must not be invoked
+         */
+        verify(gen, never()).get();
+
+    }
+
+    @Test
+    public void testOrElseThrowFromLeftNullSupplier() {
+
+        assertEquals("v", Either.left("v").orElseThrow(null));
+
+    }
+
+    @Test
+    public void testOrElseThrowFromLeftSuppliesNull() {
+
+        assertEquals("v", Either.left("v").orElseThrow(() -> null));
+
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testOrElseThrowFromRight() {
+
+        Either.right("r").orElseThrow(() -> new RuntimeException());
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testOrElseThrowFromRightNullSupplier() {
+
+        Either.right("r").orElseThrow(null);
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testOrElseThrowFromRightSuppliesNull() {
+
+        Either.right("r").orElseThrow(() -> null);
 
     }
 
@@ -398,25 +446,87 @@ public class UsageTest {
 
     }
 
+    @Test(expected = RuntimeException.class)
+    public void testRightOrElseThrowFromLeft() {
+
+        Either.left("v").rightOrElseThrow(() -> new RuntimeException());
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testRightOrElseThrowFromLeftNullSupplier() {
+
+        Either.left("v").rightOrElseThrow(null);
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testRightOrElseThrowFromLeftSuppliesNull() {
+
+        Either.left("v").rightOrElseThrow(() -> null);
+
+    }
+
+    @Test
+    public void testRightOrElseThrowFromRight() {
+
+        @SuppressWarnings("unchecked")
+        final Supplier<RuntimeException> gen = mock(Supplier.class);
+
+        assertEquals("r",
+                Either.right("r")
+                        .rightOrElseThrow(() -> new RuntimeException()));
+        /*
+         * supplier must not be invoked
+         */
+        verify(gen, never()).get();
+
+    }
+
+    public void testRightOrElseThrowFromRightNullSupplier() {
+
+        assertEquals("r", Either.right("r").orElseThrow(null));
+
+    }
+
+    public void testRightOrElseThrowFromRightSuppliesNull() {
+
+        assertEquals("r", Either.right("r").orElseThrow(() -> null));
+
+    }
+
     @Test
     public void testStreamFromLeft() {
 
-        final Stream<String> s = Either.left("left").stream();
+        final Stream<?> s = Either.left("left").stream();
 
-        final List<String> collected = s.collect(Collectors.toList());
-
-        assertEquals(Arrays.asList("left"), collected);
+        assertEquals(Arrays.asList("left"), s.collect(Collectors.toList()));
     }
 
     @Test
     public void testStreamFromRight() {
 
-        final Stream<String> s = Either.<String, Object> right("right")
-                .stream();
+        final Stream<?> s = Either.<String, Object> right("right").stream();
 
-        final List<String> collected = s.collect(Collectors.toList());
+        assertTrue(s.collect(Collectors.toList()).isEmpty());
+    }
 
-        assertEquals(Collections.emptyList(), collected);
+    @Test
+    public void testStreamRightFromLeft() {
+
+        final Stream<?> s = Either.left("left").streamRight();
+
+        assertTrue(s.collect(Collectors.toList()).isEmpty());
+
+    }
+
+    @Test
+    public void testStreamRightFromRight() {
+
+        final Stream<?> s = Either.right("right").streamRight();
+
+        assertEquals(Arrays.asList("right"), s.collect(Collectors.toList()));
+
     }
 
     @Test
