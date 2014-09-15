@@ -132,6 +132,12 @@ assert left.rightOrElseNull() == null;
 
 assert right.rightOrElseNull().equals("right");
 assert right.orElseNull() == null;
+
+assert left.orElseThrow(() -> new RuntimeException()).equals("left");
+// right.orElseThrow(() -> new RuntimeException());  <-- throws the supplied exception
+
+assert right.rightOrElseThrow(() -> new RuntimeException()).equals("right");
+// left.rightOrElseThrow(() -> new RuntimeException());  <-- throws the supplied exception
 ```
 
 ## Versioning

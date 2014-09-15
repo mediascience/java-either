@@ -298,6 +298,56 @@ public class UsageTest {
     }
 
     @Test
+    public void testOrElseThrowFromLeft() {
+
+        @SuppressWarnings("unchecked")
+        final Supplier<RuntimeException> gen = mock(Supplier.class);
+
+        assertEquals("v",
+                Either.left("v").orElseThrow(() -> new RuntimeException()));
+        /*
+         * supplier must not be invoked
+         */
+        verify(gen, never()).get();
+
+    }
+
+    @Test
+    public void testOrElseThrowFromLeftNullSupplier() {
+
+        assertEquals("v", Either.left("v").orElseThrow(null));
+
+    }
+
+    @Test
+    public void testOrElseThrowFromLeftSuppliesNull() {
+
+        assertEquals("v", Either.left("v").orElseThrow(() -> null));
+
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testOrElseThrowFromRight() {
+
+        Either.right("r").orElseThrow(() -> new RuntimeException());
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testOrElseThrowFromRightNullSupplier() {
+
+        Either.right("r").orElseThrow(null);
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testOrElseThrowFromRightSuppliesNull() {
+
+        Either.right("r").orElseThrow(() -> null);
+
+    }
+
+    @Test
     public void testRightOrElseFromLeft() {
 
         final Either<?, Object> left = Either.left("left");
@@ -393,6 +443,55 @@ public class UsageTest {
         final Either<?, Object> right = Either.right("right");
 
         assertEquals("right", right.rightOrElse(null));
+
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testRightOrElseThrowFromLeft() {
+
+        Either.left("v").rightOrElseThrow(() -> new RuntimeException());
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testRightOrElseThrowFromLeftNullSupplier() {
+
+        Either.left("v").rightOrElseThrow(null);
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testRightOrElseThrowFromLeftSuppliesNull() {
+
+        Either.left("v").rightOrElseThrow(() -> null);
+
+    }
+
+    @Test
+    public void testRightOrElseThrowFromRight() {
+
+        @SuppressWarnings("unchecked")
+        final Supplier<RuntimeException> gen = mock(Supplier.class);
+
+        assertEquals("r",
+                Either.right("r")
+                        .rightOrElseThrow(() -> new RuntimeException()));
+        /*
+         * supplier must not be invoked
+         */
+        verify(gen, never()).get();
+
+    }
+
+    public void testRightOrElseThrowFromRightNullSupplier() {
+
+        assertEquals("r", Either.right("r").orElseThrow(null));
+
+    }
+
+    public void testRightOrElseThrowFromRightSuppliesNull() {
+
+        assertEquals("r", Either.right("r").orElseThrow(() -> null));
 
     }
 
