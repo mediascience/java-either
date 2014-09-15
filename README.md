@@ -81,14 +81,14 @@ assert e.getRight().equals("huh");
 
 
 #### Convert it to optional
-````
+```
 Optional<?> p = Either.left(10).maybe();
 assert p.isPresent();
 assert p.get().equals(10);
 
 Optional<?> np = Either.right("whoa").maybe();
 assert !np.isPresent();
-````
+```
 
 (there's maybeRight(), too!)
 
@@ -102,6 +102,13 @@ assert s.collect(Collectors.toList()).equals(Collections.emptyList());
 ```
 
 (there's streamRight, too!)
+
+
+#### Iterate over it
+```
+Either.left("left").forEach(System.out::println)    // prints "left"
+Either.right("right").forEach(System.out::println)  // does nothing
+```
 
 #### Unwind it
 ```

@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -119,6 +120,30 @@ public class UsageTest {
          * function must not be called
          */
         verify(f, never()).apply(any());
+
+    }
+
+    @Test
+    public void testForEachLeft() {
+
+        @SuppressWarnings("unchecked")
+        final Consumer<Object> c = mock(Consumer.class);
+
+        Either.left("v").forEach(c);
+
+        verify(c).accept("v");
+
+    }
+
+    @Test
+    public void testForEachRight() {
+
+        @SuppressWarnings("unchecked")
+        final Consumer<Object> c = mock(Consumer.class);
+
+        Either.right("r").forEach(c);
+
+        verify(c, never()).accept(any());
 
     }
 

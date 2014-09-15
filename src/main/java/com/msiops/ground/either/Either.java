@@ -18,6 +18,7 @@ package com.msiops.ground.either;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -378,6 +379,21 @@ public final class Either<Left, Right> {
             final Function<? super Left, Either<R, Right>> f) {
 
         return this.left == null ? fail() : f.apply(extract());
+    }
+
+    /**
+     * Iterate over the value. If this is a left instance, the value is supplied
+     * to the consumer. Otherwise, this method has no observable effect.
+     *
+     * @param value
+     *            consumer. Will not be called if this is a right instance.
+     */
+    public void forEach(final Consumer<? super Left> c) {
+
+        if (this.left != null) {
+            c.accept(extract());
+        }
+
     }
 
     /**
