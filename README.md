@@ -237,9 +237,9 @@ after the 1.x series is published will result in a new series, such as
 
 ## Acknowledgements
 
-This work is based on some ideas from the standard libraries for Haskell.
-Haskell is great and you [should learn it](http://learnyouahaskell.com/) if you
-haven't already. It will improve your coding in any language.
+This work is based on the Either monad from the standard libraries for Haskell.
+[Learning Haskell](http://learnyouahaskell.com/) has improved my coding in all
+languages.
 
 Media Science International's support for FOSS and the
 sophistication to develop and publish it grows and grows. MSI Yay.
