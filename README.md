@@ -195,14 +195,15 @@ backward compatible with every lower-numbered release in the same series
 except possibly in the case of 1) a bug fix or 2) a correction to an
 underspecification.
 
-A complete change to the interface, behavior, license, or anything else
+An incompatible change to the interface, behavior, license, or anything else
 after the 1.x series is published will result in a new series, such as
 2.x.
 
 ## Acknowledgements
 
-This work is based on some ideas from standard libraries for Haskell.
-Haskell is great and you should learn it. Really.
+This work is based on some ideas from the standard libraries for Haskell.
+Haskell is great and you [should learn it](http://learnyouahaskell.com/) if you
+haven't already. It will improve your coding in any language.
 
 Media Science International's support for FOSS and the
 sophistication to develop and publish it grows and grows. MSI Yay.
