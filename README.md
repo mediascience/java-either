@@ -11,7 +11,7 @@ modeled types.
 ### Include Dependencies
 
 Either is deployed to Maven Central:
-```
+```xml
 <dependency>
   <groupId>com.msiops.ground</groupId>
   <artifactId>ground-either</artifactId>
@@ -25,7 +25,7 @@ to find the latest version.
 ### Create an Either
 
 #### A left either:
-```
+```java
 final Either<Integer, String> left = Either.left(10);
 
 assert left.isLeft();
@@ -33,7 +33,7 @@ assert left.getLeft().equals(10);
 ```
 
 #### A right either:
-```
+```java
 final Either<Integer, String> right = Either.right("uh-oh");
 
 assert !right.isLeft();
@@ -41,7 +41,7 @@ assert right.getRight().equals("uh-oh");
 ```
 
 #### Either from Optional
-```
+```java
 final Either<Integer, String> left = Either.of(Optional.of(10),
         "missing");
 assert left.isLeft();
@@ -54,7 +54,7 @@ assert right.getRight().equals("missing");
 ```
 
 #### Either from Optional and right supplier
-```
+```java
 final Either<Integer, String> left = Either.of(Optional.of(10),
         () -> "missing");
 assert left.isLeft();
@@ -67,7 +67,7 @@ assert right.getRight().equals("missing");
 ```
 
 #### Either to capture exception
-```
+```java
 final Either<Integer, RuntimeException> left = Either.of(() -> Integer
         .valueOf("AFE03", 16));
 assert left.isLeft();
@@ -82,7 +82,7 @@ assert NumberFormatException.class.isInstance(right.getRight());
 ### Use an Either
 
 #### Map it
-```
+```java
 final Either<Integer, String> left = Either.left(10);
 assert left.map(x -> x * x).isLeft();
 assert left.map(x -> x * x).getLeft().equals(10 * 10);
@@ -93,7 +93,7 @@ assert right.map(x -> x * x).getRight().equals("huh?");
 ```
 
 #### FlatMap it
-```
+```java
 final Either<Integer, String> left = Either.left(10);
 assert left.flatMap(x -> Either.left(x * x)).equals(
         Either.left(10 * 10));
@@ -108,7 +108,7 @@ assert right.flatMap(x -> Either.right("beh")).equals(
 ```
 
 #### Convert it to optional
-```
+```java
 final Either<Integer, String> left = Either.left(10);
 assert left.maybe().equals(Optional.of(10));
 
@@ -119,7 +119,7 @@ assert right.maybe().equals(Optional.empty());
 (there's maybeRight(), too!)
 
 #### Convert it to a stream
-```
+```java
 final Either<Integer, String> left = Either.left(10);
 assert left.stream().collect(Collectors.toList())
         .equals(Collections.singletonList(10));
@@ -132,7 +132,7 @@ assert right.stream().collect(Collectors.toList()).isEmpty();
 
 
 #### Iterate over it
-```
+```java
 final Either<Integer, String> left = Either.left(10);
 final ArrayList<Integer> accumL = new ArrayList<>();
 left.forEach(accumL::add);
@@ -145,7 +145,7 @@ assert accumR.isEmpty();
 ```
 
 #### Unwind it
-```
+```java
 final Either<Integer, String> left = Either.left(10);
 final Either<Integer, String> right = Either.right("right");
 
