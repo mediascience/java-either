@@ -6,6 +6,42 @@ An Either type models two simultaneous types. An instance of
 of a particular Either type is a value of exactly one of the
 modeled types.
 
+### What Is it Good For?
+
+The motivation behind Either is to signal special cases without
+diverging. For example, a function might normally return an Integer
+but might sometimes return a String describing a prerequisite violation.
+
+Or consider a function to invoke a remote REST service using JAX-RS.
+Under normal conditions, an unmarshalled entity is returned but if
+the remote end returns a non-succesful status, the caller might need
+the status code to know how to proceed.
+
+Of course, the traditional Java way to model those cases is through
+divergence by throwing an exception. In many cases, this is sufficient.
+But exceptional-divergence suffers from some drawbacks:
+
+1. you can only signal an exceptional condition with an instance of
+Throwable or its sub-classes. You can't, for instance, simply signal with
+an integer status code,
+
+1. exceptions unwind the call stack. For certain models, it is more clear
+to express the exceptional condition itself as data,
+
+1. exception handlers are bulky and can make code hard to read, and
+
+1. the exceptional divergence model conflicts with some asynchronous
+programming styles such as continuation passing or functional reactive
+programming. In these styles, the site that handles an exception might
+not have any stack relationship to the site that throws it. This makes
+it difficult to reason about traditional Java exception handlers.
+
+Another way to think about Either is as a rich Optional. You might think
+of a left Either like an Optional with a present value. Then a right
+Either is like an empty Optional that carries some additional contextual
+information.
+
+
 ## Usage
 
 ### Include Dependencies
