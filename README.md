@@ -11,7 +11,7 @@ modeled types.
 ### Include Dependencies
 
 Either is deployed to Maven Central:
-```
+```xml
 <dependency>
   <groupId>com.msiops.ground</groupId>
   <artifactId>ground-either</artifactId>
@@ -25,126 +25,162 @@ to find the latest version.
 ### Create an Either
 
 #### A left either:
-```
-Either<Integer,String> left = Either.left(10);
+```java
+final Either<Integer, String> left = Either.left(10);
+
 assert left.isLeft();
 assert left.getLeft().equals(10);
 ```
 
 #### A right either:
-```
-Either<Integer,String> right = Either.right("uh-oh");
+```java
+final Either<Integer, String> right = Either.right("uh-oh");
+
 assert !right.isLeft();
 assert right.getRight().equals("uh-oh");
 ```
 
 #### Either from Optional
+```java
+final Either<Integer, String> left = Either.of(Optional.of(10),
+        "missing");
+assert left.isLeft();
+assert left.getLeft().equals(10);
+
+final Either<Integer, String> right = Either.of(Optional.empty(),
+        "missing");
+assert !right.isLeft();
+assert right.getRight().equals("missing");
 ```
-Either<Integer,String> leftO = Either.of(Optional.of(100), "missing");
-assert leftO.isLeft();
-assert leftO.getLeft().equals(100);
 
-Either<Integer, String> rightO = Either.of(Optional.empty(), "missing");
-assert !rightO.isLeft();
-assert rightO.getRight().equals("missing");
+#### Either from Optional and right supplier
+```java
+final Either<Integer, String> left = Either.of(Optional.of(10),
+        () -> "missing");
+assert left.isLeft();
+assert left.getLeft().equals(10);
 
-// or defer the right until it is known to be needed
-Either<Integer, String> leftOS = Either.of(Optional.of(101), () -> expensive(12L));
-assert leftOS.isLeft();
-assert leftOS.getLeft().equals(101);   // expensive(..) is never called!
+final Either<Integer, String> right = Either.of(Optional.empty(),
+        () -> "missing");
+assert !right.isLeft();
+assert right.getRight().equals("missing");
 ```
 
 #### Either to capture exception
-```
-Either<Integer, RuntimeException> leftS = Either.of(() -> Integer.valueOf("AFE03",16));
-assert leftS.isLeft();
-assert leftS.getLeft().equals(Integer.valueOf("AFE03", 16));
+```java
+final Either<Integer, RuntimeException> left = Either.of(() -> Integer
+        .valueOf("AFE03", 16));
+assert left.isLeft();
+assert left.getLeft().equals(Integer.valueOf("AFE03", 16));
 
-Either<Integer, RuntimeException> rightS Either.of(() -> Integer.valueOf("BOBSYOURUNCLE", 16));
-assert !rightS.isLeft();
-assert NumberFormatException.class.isAssignableFrom(rightS.getRight());
+final Either<Integer, RuntimeException> right = Either.of(() -> Integer
+        .valueOf("BOBSYOURUNCLE", 16));
+assert !right.isLeft();
+assert NumberFormatException.class.isInstance(right.getRight());
 ```
 
 ### Use an Either
 
 #### Map it
-```
-Either<?,?> e = Either.left(10).map(x -> x * x);
-assert e.isLeft();
-assert e.getLeft().equals(100);
+```java
+final Either<Integer, String> left = Either.left(10);
+assert left.map(x -> x * x).isLeft();
+assert left.map(x -> x * x).getLeft().equals(10 * 10);
 
-Either<?,?> e = Either.right("huh").map(x -> x * x);
-assert !e.isLeft();
-assert e.getRight().equals("huh");
+final Either<Integer, String> right = Either.right("huh?");
+assert !right.map(x -> x * x).isLeft();
+assert right.map(x -> x * x).getRight().equals("huh?");
 ```
-(flatMap, too!)
 
+#### FlatMap it
+```java
+final Either<Integer, String> left = Either.left(10);
+assert left.flatMap(x -> Either.left(x * x)).equals(
+        Either.left(10 * 10));
+assert left.flatMap(x -> Either.right("beh")).equals(
+        Either.right("beh"));
+
+final Either<Integer, String> right = Either.right("right");
+assert right.flatMap(x -> Either.left(x * x)).equals(
+        Either.right("right"));
+assert right.flatMap(x -> Either.right("beh")).equals(
+        Either.right("right"));
+```
 
 #### Convert it to optional
-```
-Optional<?> p = Either.left(10).maybe();
-assert p.isPresent();
-assert p.get().equals(10);
+```java
+final Either<Integer, String> left = Either.left(10);
+assert left.maybe().equals(Optional.of(10));
 
-Optional<?> np = Either.right("whoa").maybe();
-assert !np.isPresent();
+final Either<Integer, String> right = Either.right("missing");
+assert right.maybe().equals(Optional.empty());
 ```
 
 (there's maybeRight(), too!)
 
 #### Convert it to a stream
-```
-Stream<Integer> s = Either.left(10).stream();
-assert s.collect(Collectors.toList()).equals(Collections.singletonList(10));
+```java
+final Either<Integer, String> left = Either.left(10);
+assert left.stream().collect(Collectors.toList())
+        .equals(Collections.singletonList(10));
 
-Stream<Integer> e = Either.right("oops").stream();
-assert s.collect(Collectors.toList()).equals(Collections.emptyList());
+final Either<Integer, String> right = Either.right("oops");
+assert right.stream().collect(Collectors.toList()).isEmpty();
 ```
 
 (there's streamRight, too!)
 
 
 #### Iterate over it
-```
-Either.left("left").forEach(System.out::println)    // prints "left"
-Either.right("right").forEach(System.out::println)  // does nothing
+```java
+final Either<Integer, String> left = Either.left(10);
+final ArrayList<Integer> accumL = new ArrayList<>();
+left.forEach(accumL::add);
+assert accumL.equals(Collections.singletonList(10));
+
+final Either<Integer, String> right = Either.right("exceptional");
+final ArrayList<String> accumR = new ArrayList<>();
+right.forEach(accumL::add);
+assert accumR.isEmpty();
 ```
 
 #### Unwind it
-```
-Either<Object,Object> left = Either.left("left");
-Either<Object,Object> right = Either.right("right");
+```java
+final Either<Integer, String> left = Either.left(10);
+final Either<Integer, String> right = Either.right("right");
 
-assert left.getLeft().equals("left");
-// left.getRight();   <-- Throws! Don't do this
+assert left.getLeft().equals(10);
+// left.getRight(); <-- throws, don't do this
 
 assert right.getRight().equals("right");
-// right.getLeft();   <-- Throws! Don't do this
+// right.getLeft(); <-- throws, don't do this
 
-
-assert left.orElse("other").equals("left");
+assert left.orElse(99).equals(10);
 assert left.rightOrElse("other").equals("other");
 
 assert right.rightOrElse("other").equals("right");
-assert right.orElse("other").equals("other");
+assert right.orElse(99).equals(99);
 
-assert left.orElseGet(() -> "other").equals("left");
+assert left.orElseGet(() -> 99).equals(10);
 assert left.rightOrElseGet(() -> "other").equals("other");
 
 assert right.rightOrElseGet(() -> "other").equals("right");
-assert right.orElseGet(() -> "other").equals("other");
+assert right.orElseGet(() -> 99).equals(99);
 
-assert left.orElseNull().equals("left");
+assert left.orElseNull().equals(10);
 assert left.rightOrElseNull() == null;
 
 assert right.rightOrElseNull().equals("right");
 assert right.orElseNull() == null;
 
-assert left.orElseThrow(() -> new RuntimeException()).equals("left");
-// right.orElseThrow(() -> new RuntimeException());  <-- throws the supplied exception
+assert left.orElseThrow(() -> new RuntimeException()).equals(10);
+// right.orElseThrow(() -> new RuntimeException()); <-- throws the
+//         supplied exception
 
-assert right.rightOrElseThrow(() -> new RuntimeException()).equals("right");
-// left.rightOrElseThrow(() -> new RuntimeException());  <-- throws the supplied exception
+assert right.rightOrElseThrow(() -> new RuntimeException()).equals(
+        "right");
+// left.rightOrElseThrow(() -> new RuntimeException()); <-- throws the
+//         supplied exception
 ```
 
 ## Versioning
@@ -159,14 +195,15 @@ backward compatible with every lower-numbered release in the same series
 except possibly in the case of 1) a bug fix or 2) a correction to an
 underspecification.
 
-A complete change to the interface, behavior, license, or anything else
+An incompatible change to the interface, behavior, license, or anything else
 after the 1.x series is published will result in a new series, such as
 2.x.
 
 ## Acknowledgements
 
-This work is based on some ideas from standard libraries for Haskell.
-Haskell is great and you should learn it. Really.
+This work is based on some ideas from the standard libraries for Haskell.
+Haskell is great and you [should learn it](http://learnyouahaskell.com/) if you
+haven't already. It will improve your coding in any language.
 
 Media Science International's support for FOSS and the
 sophistication to develop and publish it grows and grows. MSI Yay.
