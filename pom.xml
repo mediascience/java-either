@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.msiops.ground</groupId>
   <artifactId>ground-either</artifactId>
-  <version>0-SNAPSHOT</version>
+  <version>0.9</version>
   <packaging>jar</packaging>
   <name>GROUND :: Either</name>
   <description>A value that can be either of two types</description>
