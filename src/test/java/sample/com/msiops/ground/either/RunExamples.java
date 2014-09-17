@@ -16,12 +16,15 @@
  */
 package sample.com.msiops.ground.either;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Run the examples with assertions enabled.
  */
 public final class RunExamples {
 
-    private static final Object EXAMPLES;
+    private static final List<Example> EXAMPLES;
 
     static {
 
@@ -29,10 +32,9 @@ public final class RunExamples {
             final ClassLoader loader = ClassLoader.getSystemClassLoader();
             loader.setDefaultAssertionStatus(true);
             final Class<?> clazz = loader
-                    .loadClass("sample.com.msiops.ground.either.Examples");
-            EXAMPLES = clazz.newInstance();
-        } catch (ClassNotFoundException | InstantiationException
-                | IllegalAccessException e) {
+                    .loadClass("sample.com.msiops.ground.either.Example");
+            EXAMPLES = Arrays.asList((Example[]) clazz.getEnumConstants());
+        } catch (final ClassNotFoundException e) {
             throw new RuntimeException("cannot load examples instance", e);
         }
 
@@ -40,21 +42,19 @@ public final class RunExamples {
 
     public static void main(final String[] args) {
 
-        final Examples examples = (Examples) EXAMPLES;
+        EXAMPLES.forEach(RunExamples::runExample);
 
-        examples.constructLeft();
-        examples.constructRight();
-        examples.constructFromOptional();
-        examples.constructFromOptionalDeferred();
-        examples.captureUncheckedException();
-        examples.captureCheckedException();
-        examples.map();
-        examples.flatMap();
-        examples.maybe();
-        examples.stream();
-        examples.iterate();
-        examples.unwind();
-        examples.swap();
+    }
+
+    private static void runExample(final Example x) {
+
+        try {
+            System.out.print(x.name() + "...");
+            x.run();
+            System.out.println("ok");
+        } catch (final AssertionError ae) {
+            System.out.println("FAILED!");
+        }
 
     }
 }
