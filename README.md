@@ -178,11 +178,11 @@ assert accumR.isEmpty();
 ### Morph it
 ```java
 final Either<Integer, String> left = Either.left(10);
-assert left.swap().isLeft() != left.isLeft();
+assert !left.swap().isLeft();
 assert left.swap().getRight().equals(10);
 
 final Either<Integer, String> right = Either.right("right");
-assert right.swap().isLeft() != right.isLeft();
+assert right.swap().isLeft();
 assert right.swap().getLeft().equals("right");
 ```
 
