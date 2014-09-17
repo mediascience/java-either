@@ -82,6 +82,13 @@
           </includes>
           <header>https://s3-us-west-1.amazonaws.com/com-msiops-development/resource/LICENSE_HEADER</header>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
