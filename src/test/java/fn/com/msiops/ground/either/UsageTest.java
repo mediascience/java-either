@@ -508,15 +508,17 @@ public class UsageTest {
 
     }
 
+    @Test
     public void testRightOrElseThrowFromRightNullSupplier() {
 
-        assertEquals("r", Either.right("r").orElseThrow(null));
+        assertEquals("r", Either.right("r").rightOrElseThrow(null));
 
     }
 
+    @Test
     public void testRightOrElseThrowFromRightSuppliesNull() {
 
-        assertEquals("r", Either.right("r").orElseThrow(() -> null));
+        assertEquals("r", Either.right("r").rightOrElseThrow(() -> null));
 
     }
 
