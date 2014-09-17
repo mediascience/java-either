@@ -487,16 +487,6 @@ public final class Either<Left, Right> {
     }
 
     /**
-     * Convert to an optional of the Right type.
-     *
-     * @return An optional that is present if this is a right variant, empty if
-     *         not.
-     */
-    public Optional<Right> maybeRight() {
-        return Optional.ofNullable(this.right);
-    }
-
-    /**
      * Retrieve the value or an alternative. If this is a left instance, the
      * contained value is returned, otherwise a provided alternative is
      * returned.
@@ -588,94 +578,6 @@ public final class Either<Left, Right> {
     }
 
     /**
-     * Retrieve the value or an alternative. If this is a right instance, the
-     * contained value is returned, otherwise a provided alternative is
-     * returned.
-     *
-     * @param other
-     *            alternative value.
-     *
-     * @return the contained value if this is a right instance, the alternative
-     *         otherwise.
-     *
-     * @throws NullPointerException
-     *             if this is a left value and the provided alternative is null.
-     */
-    public Right rightOrElse(final Right other) {
-
-        return this.left == null ? this.right : Objects.requireNonNull(other);
-
-    }
-
-    /**
-     * Retrieve the value or compute an alternative. If this is a right
-     * instance, the contained value is returned, otherwise an alternative is
-     * computed from the provided supplier.
-     *
-     * @param other
-     *            alternative value supplier. Required if this is a left
-     *            instance. The supplier is not invoked if this is a right
-     *            instance. If invoked, the supplier must not return null.
-     *
-     * @return the contained value if this is a right instance, the computed
-     *         alternative otherwise.
-     *
-     * @throws NullPointerException
-     *             if this is a left instance and the supplier parameter is null
-     *             or if the supplier is invoked and it returns null.
-     */
-    public Right rightOrElseGet(final Supplier<? extends Right> other) {
-
-        return this.left == null ? this.right : Objects.requireNonNull(other
-                .get());
-    }
-
-    /**
-     * Retrieve the right value or an alternative. If this is a right value, the
-     * contained value is returned. Otherwise, a null reference to the Right
-     * type is returned.
-     *
-     * @return contained value if this is a right instance, null otherwise.
-     */
-    public Right rightOrElseNull() {
-
-        return this.left == null ? this.right : null;
-    }
-
-    /**
-     * Retrieve the value or die trying.
-     *
-     * @param genx
-     *            throwable supplier. If this is a left instance, this supplier
-     *            will be invoked and its return value thrown. If this is a
-     *            right instance, the supplier will not be invoked. Must not be
-     *            null if this is a left instance. The supplier must not return
-     *            null if this is a left instance.
-     *
-     * @return the value if this is a right instance.
-     *
-     * @throws X
-     *             if this is a left instance.
-     *
-     * @param <X>
-     *            type of exception to throw if this is a left instance.
-     *
-     * @throws NullPointerException
-     *             if this is a left instance and supplier is null or this is a
-     *             left instance and the supplier returns null.
-     */
-    public <X extends Throwable> Right rightOrElseThrow(final Supplier<X> genx)
-            throws X {
-
-        if (this.left != null) {
-            throw genx.get();
-        }
-
-        return this.right;
-
-    }
-
-    /**
      * Convert to a {@link Stream} of the Left type.
      *
      * @return A stream containing only the value if this is a left insance. An
@@ -687,15 +589,9 @@ public final class Either<Left, Right> {
 
     }
 
-    /**
-     * Convert to a {@link Stream} of the right type.
-     *
-     * @return a stream containing only the value if this is a right instance.
-     *         An empty stream if this is a left instance.
-     */
-    public Stream<Right> streamRight() {
+    public Either<Right, Left> swap() {
 
-        return this.left == null ? Stream.of(this.right) : Stream.empty();
+        return this.left == null ? left(this.right) : right(extract());
 
     }
 

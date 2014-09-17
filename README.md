@@ -152,8 +152,6 @@ final Either<Integer, String> right = Either.right("missing");
 assert right.maybe().equals(Optional.empty());
 ```
 
-(there's maybeRight(), too!)
-
 #### Convert it to a stream
 ```java
 final Either<Integer, String> left = Either.left(10);
@@ -163,9 +161,6 @@ assert left.stream().collect(Collectors.toList())
 final Either<Integer, String> right = Either.right("oops");
 assert right.stream().collect(Collectors.toList()).isEmpty();
 ```
-
-(there's streamRight, too!)
-
 
 #### Iterate over it
 ```java
@@ -180,6 +175,17 @@ right.forEach(accumL::add);
 assert accumR.isEmpty();
 ```
 
+### Morph it
+```java
+final Either<Integer, String> left = Either.left(10);
+assert left.swap().isLeft() != left.isLeft();
+assert left.swap().getRight().equals(10);
+
+final Either<Integer, String> right = Either.right("right");
+assert right.swap().isLeft() != right.isLeft();
+assert right.swap().getLeft().equals("right");
+```
+
 #### Unwind it
 ```java
 final Either<Integer, String> left = Either.left(10);
@@ -192,30 +198,16 @@ assert right.getRight().equals("right");
 // right.getLeft(); <-- throws, don't do this
 
 assert left.orElse(99).equals(10);
-assert left.rightOrElse("other").equals("other");
-
-assert right.rightOrElse("other").equals("right");
 assert right.orElse(99).equals(99);
 
 assert left.orElseGet(() -> 99).equals(10);
-assert left.rightOrElseGet(() -> "other").equals("other");
-
-assert right.rightOrElseGet(() -> "other").equals("right");
 assert right.orElseGet(() -> 99).equals(99);
 
 assert left.orElseNull().equals(10);
-assert left.rightOrElseNull() == null;
-
-assert right.rightOrElseNull().equals("right");
 assert right.orElseNull() == null;
 
 assert left.orElseThrow(() -> new RuntimeException()).equals(10);
 // right.orElseThrow(() -> new RuntimeException()); <-- throws the
-//         supplied exception
-
-assert right.rightOrElseThrow(() -> new RuntimeException()).equals(
-        "right");
-// left.rightOrElseThrow(() -> new RuntimeException()); <-- throws the
 //         supplied exception
 ```
 

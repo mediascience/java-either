@@ -173,18 +173,6 @@ public final class Examples {
 
     }
 
-    public void maybeRight() {
-
-        final Either<Integer, String> left = Either.left(10);
-        assert left.maybeRight().equals(Optional.empty());
-
-        final Either<Integer, String> right = Either.right("missing");
-        assert right.maybeRight().equals(Optional.of("missing"));
-
-        System.out.println("MaybeRight OK");
-
-    }
-
     public void stream() {
 
         final Either<Integer, String> left = Either.left(10);
@@ -198,16 +186,17 @@ public final class Examples {
 
     }
 
-    public void streamRight() {
+    public void swap() {
 
         final Either<Integer, String> left = Either.left(10);
-        assert left.streamRight().collect(Collectors.toList()).isEmpty();
+        assert left.swap().isLeft() != left.isLeft();
+        assert left.swap().getRight().equals(10);
 
-        final Either<Integer, String> right = Either.right("oops");
-        assert right.streamRight().collect(Collectors.toList())
-                .equals(Collections.singletonList("oops"));
+        final Either<Integer, String> right = Either.right("right");
+        assert right.swap().isLeft() != right.isLeft();
+        assert right.swap().getLeft().equals("right");
 
-        System.out.println("MaybeRight OK");
+        System.out.println("Swap OK");
 
     }
 
@@ -223,30 +212,16 @@ public final class Examples {
         // right.getLeft(); <-- throws, don't do this
 
         assert left.orElse(99).equals(10);
-        assert left.rightOrElse("other").equals("other");
-
-        assert right.rightOrElse("other").equals("right");
         assert right.orElse(99).equals(99);
 
         assert left.orElseGet(() -> 99).equals(10);
-        assert left.rightOrElseGet(() -> "other").equals("other");
-
-        assert right.rightOrElseGet(() -> "other").equals("right");
         assert right.orElseGet(() -> 99).equals(99);
 
         assert left.orElseNull().equals(10);
-        assert left.rightOrElseNull() == null;
-
-        assert right.rightOrElseNull().equals("right");
         assert right.orElseNull() == null;
 
         assert left.orElseThrow(() -> new RuntimeException()).equals(10);
         // right.orElseThrow(() -> new RuntimeException()); <-- throws the
-        // supplied exception
-
-        assert right.rightOrElseThrow(() -> new RuntimeException()).equals(
-                "right");
-        // left.rightOrElseThrow(() -> new RuntimeException()); <-- throws the
         // supplied exception
 
         System.out.println("Unwind OK");
