@@ -51,11 +51,10 @@ public final class RunExamples {
         examples.map();
         examples.flatMap();
         examples.maybe();
-        examples.maybeRight();
         examples.stream();
-        examples.streamRight();
         examples.iterate();
         examples.unwind();
+        examples.swap();
 
     }
 }
