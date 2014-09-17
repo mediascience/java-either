@@ -74,7 +74,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testFlatMapLeftToLeft() {
+    public void testFlatMapFromLeftToLeft() {
 
         final Function<Integer, Either<Object, Object>> f = x -> Either.left(x
                 * x);
@@ -84,7 +84,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testFlatMapLeftToRight() {
+    public void testFlatMapFromLeftToRight() {
 
         final Either<Object, Object> fresult = Either.right("right");
 
@@ -95,7 +95,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testFlatMapRightToLeft() {
+    public void testFlatMapFromRightToLeft() {
 
         @SuppressWarnings("unchecked")
         final Function<Object, Either<Object, Object>> f = mock(Function.class);
@@ -110,7 +110,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testFlatMapRightToRight() {
+    public void testFlatMapFromRightToRight() {
 
         @SuppressWarnings("unchecked")
         final Function<Object, Either<Object, String>> f = mock(Function.class);
@@ -124,7 +124,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testForEachLeft() {
+    public void testForEachFromLeft() {
 
         @SuppressWarnings("unchecked")
         final Consumer<Object> c = mock(Consumer.class);
@@ -136,7 +136,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testForEachRight() {
+    public void testForEachFromRight() {
 
         @SuppressWarnings("unchecked")
         final Consumer<Object> c = mock(Consumer.class);
@@ -255,7 +255,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testMapLeft() {
+    public void testMapFromLeft() {
 
         final Function<Integer, ?> f = x -> x * x;
 
@@ -264,7 +264,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testMapRight() {
+    public void testMapFromRight() {
 
         @SuppressWarnings("unchecked")
         final Function<Integer, ?> f = mock(Function.class);
@@ -371,7 +371,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testSwapLeftIsNotLeft() {
+    public void testSwapFromLeftIsNotLeft() {
 
         final Either<?, ?> left = Either.left("left");
 
@@ -380,7 +380,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testSwapLeftRightValue() {
+    public void testSwapFromLeftRightValue() {
 
         final Either<?, ?> left = Either.left("left");
 
@@ -389,7 +389,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testSwapRightIsLeft() {
+    public void testSwapFromRightIsLeft() {
 
         final Either<?, ?> right = Either.right("right");
 
@@ -398,7 +398,7 @@ public class UsageTest {
     }
 
     @Test
-    public void testSwapRightLeftValue() {
+    public void testSwapFromRightLeftValue() {
 
         final Either<?, ?> right = Either.right("right");
 
