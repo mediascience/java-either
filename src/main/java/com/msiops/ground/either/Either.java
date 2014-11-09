@@ -23,6 +23,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import com.msiops.footing.functional.FunT1;
 import com.msiops.footing.functional.SupplierT;
 
 /**
@@ -141,12 +142,12 @@ public final class Either<Left, Right> {
      *
      * @return lifted function.
      */
-    public static <T, R> Function<T, Either<R, Exception>> liftChecked(
-            final FunctionX<T, R, ?> f) {
+    public static <T, R> Function<T, Either<R, Throwable>> liftChecked(
+            final FunT1<T, R> f) {
         return t -> {
             try {
                 return new Either<>(f.apply(t), null);
-            } catch (final Exception x) {
+            } catch (final Throwable x) {
                 return new Either<>(null, x);
             }
         };
