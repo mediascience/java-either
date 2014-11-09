@@ -24,15 +24,15 @@ import java.util.function.Supplier;
 
 import org.junit.Test;
 
+import com.msiops.footing.functional.SupplierT;
 import com.msiops.ground.either.Either;
-import com.msiops.ground.either.SupplierX;
 
 public class ConstructionTest {
 
     @Test
     public void testFromCheckedConvergentLeftSupplier() {
 
-        final SupplierX<?, ?> left = () -> "left";
+        final SupplierT<?> left = () -> "left";
 
         final Either<?, ?> e = Either.ofChecked(left);
 
@@ -45,7 +45,7 @@ public class ConstructionTest {
     public void testFromCheckedDivergentLeftSupplier() {
 
         final Exception rightx = new Exception("right");
-        final SupplierX<?, ?> left = () -> {
+        final SupplierT<?> left = () -> {
             throw rightx;
         };
 

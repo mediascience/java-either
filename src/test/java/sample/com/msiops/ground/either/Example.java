@@ -30,12 +30,12 @@ public enum Example implements Runnable {
     CAPTURE_CHECKED_EXCEPTION {
         @Override
         public void run() {
-            final Either<URI, Exception> left = Either.ofChecked(() -> new URI(
+            final Either<URI, Throwable> left = Either.ofChecked(() -> new URI(
                     "my:uri"));
             assert left.isLeft();
             assert left.getLeft().equals(URI.create("my:uri"));
 
-            final Either<URI, Exception> right = Either
+            final Either<URI, Throwable> right = Either
                     .ofChecked(() -> new URI("::90::uri"));
             assert !right.isLeft();
             assert URISyntaxException.class.isInstance(right.getRight());
