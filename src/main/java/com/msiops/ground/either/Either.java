@@ -23,6 +23,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import com.msiops.footing.functional.FunT1;
+import com.msiops.footing.functional.SupplierT;
+
 /**
  * <p>
  * Value that can be of alternative types. An {@link Either} specifies two
@@ -139,12 +142,12 @@ public final class Either<Left, Right> {
      *
      * @return lifted function.
      */
-    public static <T, R> Function<T, Either<R, Exception>> liftChecked(
-            final FunctionX<T, R, ?> f) {
+    public static <T, R> Function<T, Either<R, Throwable>> liftChecked(
+            final FunT1<T, R> f) {
         return t -> {
             try {
                 return new Either<>(f.apply(t), null);
-            } catch (final Exception x) {
+            } catch (final Throwable x) {
                 return new Either<>(null, x);
             }
         };
@@ -249,7 +252,7 @@ public final class Either<Left, Right> {
 
     /**
      * <p>
-     * Construct from a {@link SupplierX}. If the supplier convergences, the
+     * Construct from a {@link SupplierT}. If the supplier convergences, the
      * constructed instance is a left variant containing the supplied value. If
      * the supplier diverges by throwing, the constructed instance is a right
      * variant containing the thrown exception.
@@ -264,11 +267,11 @@ public final class Either<Left, Right> {
      * @return left instance if supplier converges, right instance if it throws
      *         a {@link Exception}.
      */
-    public static <R> Either<R, Exception> ofChecked(final SupplierX<R, ?> s) {
+    public static <R> Either<R, Throwable> ofChecked(final SupplierT<R> s) {
 
         try {
-            return new Either<>(s.supply(), null);
-        } catch (final Exception x) {
+            return new Either<>(s.get(), null);
+        } catch (final Throwable x) {
             return new Either<>(null, x);
         }
 

@@ -30,15 +30,15 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
+import com.msiops.footing.functional.FunT1;
 import com.msiops.ground.either.Either;
-import com.msiops.ground.either.FunctionX;
 
 public class UsageTest {
 
     @Test
     public void testCheckedConvergentLift() {
 
-        final FunctionX<Integer, ?, ?> f = x -> x * x;
+        final FunT1<Integer, ?> f = x -> x * x;
 
         final Function<Integer, ?> lf = Either.liftChecked(f);
 
@@ -50,7 +50,7 @@ public class UsageTest {
         final Object r;
         try {
             r = f.apply(10);
-        } catch (final Exception e) {
+        } catch (final Throwable e) {
             throw new AssertionError("invalid test, f should not throw");
         }
 
@@ -63,7 +63,7 @@ public class UsageTest {
 
         final Exception rightx = new Exception("timmy's down a well!");
 
-        final FunctionX<Object, ?, ?> f = v -> {
+        final FunT1<Object, ?> f = v -> {
             throw rightx;
         };
 
@@ -357,7 +357,7 @@ public class UsageTest {
     @Test
     public void testStreamFromLeft() {
 
-        final Stream<?> s = Either.left("left").stream();
+        final Stream<String> s = Either.left("left").stream();
 
         assertEquals(Arrays.asList("left"), s.collect(Collectors.toList()));
     }
@@ -365,7 +365,8 @@ public class UsageTest {
     @Test
     public void testStreamFromRight() {
 
-        final Stream<?> s = Either.<String, Object> right("right").stream();
+        final Stream<String> s = Either.<String, Object> right("right")
+                .stream();
 
         assertTrue(s.collect(Collectors.toList()).isEmpty());
     }

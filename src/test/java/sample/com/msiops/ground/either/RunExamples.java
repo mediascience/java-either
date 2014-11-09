@@ -46,6 +46,12 @@ public final class RunExamples {
 
     }
 
+    public static void runSilentyl() {
+
+        EXAMPLES.forEach(Example::run);
+
+    }
+
     private static void runExample(final Example x) {
 
         try {
