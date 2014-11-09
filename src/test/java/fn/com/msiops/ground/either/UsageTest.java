@@ -357,7 +357,7 @@ public class UsageTest {
     @Test
     public void testStreamFromLeft() {
 
-        final Stream<?> s = Either.left("left").stream();
+        final Stream<String> s = Either.left("left").stream();
 
         assertEquals(Arrays.asList("left"), s.collect(Collectors.toList()));
     }
@@ -365,7 +365,7 @@ public class UsageTest {
     @Test
     public void testStreamFromRight() {
 
-        final Stream<?> s = Either.<String, Object> right("right").stream();
+        final Stream<String> s = Either.<String, Object> right("right").stream();
 
         assertTrue(s.collect(Collectors.toList()).isEmpty());
     }
