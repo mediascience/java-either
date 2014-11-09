@@ -16,6 +16,10 @@
   </licenses>
   <dependencies>
     <dependency>
+      <groupId>com.msiops.footing</groupId>
+      <artifactId>footing-functional</artifactId>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
@@ -28,6 +32,11 @@
   </dependencies>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>com.msiops.footing</groupId>
+        <artifactId>footing-functional</artifactId>
+        <version>0.4</version>
+      </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
